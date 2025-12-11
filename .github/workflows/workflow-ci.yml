@@ -1,7 +1,7 @@
 name: CI/CD pipeline
 
 env:
-  NODE_VERSION: "alpine-25.2.1"
+  NODE_VERSION: "node:25-alpine"
   DOCKER_IMAGE_NAME: ${{ vars.DOCKER_USER }}/calculatrice:latest
 
 on:
@@ -14,7 +14,7 @@ jobs:
   build_app:
     runs-on: ubuntu-latest
     container:
-      image: node:alpine-25.2.1
+      image: node:25-alpine
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -41,7 +41,7 @@ jobs:
   run_tests:
     runs-on: ubuntu-latest
     container:
-      image: node:alpine-25.2.1
+      image: node:25-alpine
     needs: build_app
     if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop'
     steps:
