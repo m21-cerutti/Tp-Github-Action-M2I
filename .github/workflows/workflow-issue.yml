@@ -1,0 +1,14 @@
+name: Workflow issue
+on:
+  issues:
+    types: opened
+
+jobs:
+  commentaire:
+    runs-on: Default
+    permissions:
+      issues: write
+    steps:
+      - run: gh issue comment ${{ github.event.issue.html_url }} --body "Merci d'avoir ouvert cette issue !"
+        env:
+          GH_TOKEN: ${{secrets.GITHUB_TOKEN}}
