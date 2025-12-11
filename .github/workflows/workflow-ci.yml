@@ -1,8 +1,9 @@
 name: CI/CD pipeline
 
-env:
-  NODE_VERSION: "node:25-alpine"
-  DOCKER_IMAGE_NAME: ${{ vars.DOCKERHUB_USERNAME }}/calculatrice:latest
+# Not quite working
+# env:
+#   NODE_VERSION: "node:25-alpine"
+#   DOCKER_IMAGE_NAME: ${{ vars.DOCKERHUB_USERNAME }}/calculatrice:latest
 
 on:
   push:
@@ -68,6 +69,7 @@ jobs:
 
   docker:
     runs-on: ubuntu-latest
+    environment: Default
     needs: run_tests
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
     steps:
@@ -88,11 +90,11 @@ jobs:
         with:
           context: .
           push: true
-          tags: ${{ vars.DOCKER_IMAGE_NAME }}
+          tags: ${{ vars.DOCKERHUB_USERNAME }}/calculatrice:latest
 
       - name: Run docker image
         shell: bash
-        run: docker run ${{ vars.DOCKER_IMAGE_NAME }}
+        run: docker run ${{ vars.DOCKERHUB_USERNAME }}/calculatrice:latest
 
       - name: logout
         if: always()
