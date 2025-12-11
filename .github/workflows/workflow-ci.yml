@@ -13,11 +13,10 @@ on:
 jobs:
   build_app:
     runs-on: ubuntu-latest
-    container:
-      image: node:25-alpine
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        
       - name: Cache dependencies
         uses: actions/cache@v4
         with:
@@ -25,8 +24,12 @@ jobs:
           key: ${{ runner.os }}-node-${{ hashFiles('package.json') }}
           restore-keys: ${{ runner.os }}-node-
 
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '25'
+
       - name: Build application
-        shell: bash
         run: |
           npm ci
           npm run build
@@ -40,13 +43,16 @@ jobs:
 
   run_tests:
     runs-on: ubuntu-latest
-    container:
-      image: node:25-alpine
     needs: build_app
     if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop'
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '25'
 
       - name: Restore cache
         uses: actions/cache@v4
