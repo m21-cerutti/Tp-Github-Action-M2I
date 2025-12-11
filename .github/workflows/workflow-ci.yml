@@ -14,7 +14,7 @@ jobs:
   build_app:
     runs-on: ubuntu-latest
     container:
-      image: node:${{ vars.NODE_VERSION }}
+      image: node:alpine-25.2.1
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -41,7 +41,7 @@ jobs:
   run_tests:
     runs-on: ubuntu-latest
     container:
-      image: node:${{ vars.NODE_VERSION }}
+      image: node:alpine-25.2.1
     needs: build_app
     if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop'
     steps:
